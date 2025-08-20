@@ -1,0 +1,104 @@
+﻿@model SupportTicketSystem.Models.AddTicket
+
+@{
+    ViewData["Title"] = "New Ticket";
+}
+
+<h2>Create New Ticket</h2>
+
+<form asp-action="Index" method="post">
+    <div class="form-group">
+        <label asp-for="Summary"></label>
+        <textarea asp-for="Summary" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Summary" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Category">Category</label>
+        <select asp-for="Category" class="form-control" id="categorySelect">
+            <option value="">-- Select Category --</option>
+            <option value="Equipment IT">Equipment IT</option>
+            <option value="Production IT">Production IT</option>
+            <option value="Operation IT">Operation IT</option>
+        </select>
+        <span asp-validation-for="Category" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Assignment">Assignment</label>
+        <select asp-for="Assignment" class="form-control" id="assignmentSelect">
+            <option value="">-- Select Employee --</option>
+        </select>
+        <span asp-validation-for="Assignment" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Impact</label><br />
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Impact" value="Low" />
+            <label class="form-check-label">Low</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Impact" value="Medium" checked />
+            <label class="form-check-label">Medium</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="Impact" value="High" />
+            <label class="form-check-label">High</label>
+        </div>
+        <span asp-validation-for="Impact" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Location">Location</label>
+        <input asp-for="Location" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AssetType">Asset Type</label>
+        <select asp-for="AssetType" class="form-control">
+            <option value="">-- Select Asset Type --</option>
+            <option value="Server">Server</option>
+            <option value="CPU">CPU</option>
+            <option value="Monitor">Monitor</option>
+            <option value="Printer">Printer</option>
+            <option value="Scanner">Scanner</option>
+        </select>
+        <span asp-validation-for="AssetType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Ticket</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        const assignmentData = {
+            "Equipment IT": ["Yash Somaiya", "Vishal Dave", "Arth Patel"],
+            "Production IT": ["Santosh Dhadbage", "Mahantesh Daingade", "Jayesh Pitroda", "Dharmesh Malviya", "Ganesh Deshmukh", "Dnyani Ahire", "Rahul Tiwari", "Pankaj Bhise", "Gaurav Neve", "Ashutosh Kumar"],
+            "Operation IT": ["Bharat shete", "Vivek Sharma"]
+        };
+
+        document.getElementById("categorySelect").addEventListener("change", function () {
+            const category = this.value;
+            const assignmentSelect = document.getElementById("assignmentSelect");
+
+            // Clear previous options
+            assignmentSelect.innerHTML = '<option value="">-- Select Employee --</option>';
+
+            if (assignmentData[category]) {
+                assignmentData[category].forEach(name => {
+                    const option = document.createElement("option");
+                    option.value = name;
+                    option.textContent = name;
+                    assignmentSelect.appendChild(option);
+                });
+            }
+        });
+    </script>
+}

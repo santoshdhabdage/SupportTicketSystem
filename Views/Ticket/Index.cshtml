@@ -1,0 +1,62 @@
+﻿@model IEnumerable<SupportTicketSystem.Models.Ticket>
+
+@{
+    ViewData["Title"] = "All Tickets";
+}
+
+<h2>All Tickets</h2>
+
+<a class="btn btn-primary mb-3" asp-action="Create">Create New Ticket</a>
+
+<form asp-action="Index" method="get" class="mb-3">
+    <div class="input-group">
+        <input type="text" name="searchString" value="@Context.Request.Query["searchString"]"
+               class="form-control" placeholder="Search by title, status, or category" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Created</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+            <tr>
+                <td>@ticket.Title</td>
+                <td>
+                    @if (ticket.Status == "Open")
+                    {
+                        <span class="badge bg-danger">Open</span>
+                    }
+                    else if (ticket.Status == "In Progress")
+                    {
+                        <span class="badge bg-warning text-dark">In Progress</span>
+                    }
+                    else if (ticket.Status == "Closed")
+                    {
+                        <span class="badge bg-success">Closed</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">@ticket.Status</span>
+                    }
+                </td>
+                <td>@ticket.Priority</td>
+                <td>@ticket.CreatedAt.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-sm btn-info">View</a>
+                    <a asp-action="Edit" asp-route-id="@ticket.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@ticket.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
